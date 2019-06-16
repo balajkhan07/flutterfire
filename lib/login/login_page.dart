@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../signup/signup_page.dart';
-/* import 'package:shared_preferences/shared_preferences.dart'; */
+import '../home/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,9 +16,13 @@ class LoginPageState extends State<LoginPage> {
   String password;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  void login(String email, String password) async {
-    FirebaseUser user = await firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+  login(String email, String password) async {
+    FirebaseUser user = await firebaseAuth
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((onValue) async {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('uid', onValue.uid);
+    });
 
     /* SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -25,25 +30,7 @@ class LoginPageState extends State<LoginPage> {
 
     print(prefs.getString('uid')); */
 
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Alert Dialog title"),
-          content: new Text(user.uid),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+    return user;
   }
 
   @override
@@ -110,6 +97,10 @@ class LoginPageState extends State<LoginPage> {
               onPressed: () {
                 setState(() {
                   login(email, password);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Contacts()));
                 });
               },
               textColor: Colors.white,

@@ -23,14 +23,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  shared_preferences: 0.5.3+1
 
   firebase_core: ^0.2.5+1
   firebase_auth: 0.7.0
   cloud_firestore: 0.8.2+1
+  contacts_service: ^0.2.7
   
-  shared_preferences:
-
-
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
