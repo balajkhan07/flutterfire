@@ -36,7 +36,7 @@ class MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: user == '' ? LoginPage() : Contacts(),
+      home: user == null ? LoginPage() : Contacts(),
     );
   }
 }
